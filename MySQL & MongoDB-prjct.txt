@@ -1,0 +1,150 @@
+CREATE TABLE Empl (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(50),
+    job VARCHAR(50),
+    mgr INT,
+    hiredate DATE,
+    sal DECIMAL(10, 2),
+    comm DECIMAL(10, 2),
+    deptno INT
+);
+
+SELECT ename, sal
+FROM Empl
+WHERE sal >= 2200;
+
+SELECT *
+FROM Empl
+WHERE comm IS NULL;
+
+SELECT ename, sal
+FROM Empl
+WHERE sal NOT BETWEEN 2500 AND 4000;
+
+SELECT ename, job, sal
+FROM Empl
+WHERE mgr IS NULL;
+
+SELECT ename
+FROM Empl
+WHERE ename LIKE '__A%';
+
+SELECT ename
+FROM Empl
+WHERE ename LIKE '%T';
+
+
+-----------------------------------------------------------------
+2.)
+
+
+CREATE TABLE Employee (
+    empcode INT PRIMARY KEY,
+    empname VARCHAR(50),
+    esalary DECIMAL(10, 2),
+    empage INT
+);
+
+
+
+import java.sql.*;
+
+public class JdbcInsertExample {
+
+    public static void main(String[] args) {
+        // Database connection details
+        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your DB details
+        String username = "your_username"; // Replace with your DB username
+        String password = "your_password"; // Replace with your DB password
+        
+
+        String insertQuery = "INSERT INTO Employee (empcode, empname, esalary, empage) VALUES (?, ?, ?, ?)";
+
+
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
+
+           
+            pstmt.setInt(1, 101);
+            pstmt.setString(2, "Jenny");
+            pstmt.setDouble(3, 10000);
+            pstmt.setInt(4, 25);
+            pstmt.executeUpdate(); // Execute insertion
+
+
+            pstmt.setInt(1, 102);
+            pstmt.setString(2, "Jacky");
+            pstmt.setDouble(3, 20000);
+            pstmt.setInt(4, 30);
+            pstmt.executeUpdate(); // Execute insertion
+
+           
+            pstmt.setInt(1, 103);
+            pstmt.setString(2, "Joe");
+            pstmt.setDouble(3, 40000);
+            pstmt.setInt(4, 20);
+            pstmt.executeUpdate(); // Execute insertion
+
+            
+            pstmt.setInt(1, 104);
+            pstmt.setString(2, "John");
+            pstmt.setDouble(3, 80000);
+            pstmt.setInt(4, 40);
+            pstmt.executeUpdate(); // Execute insertion
+
+            
+            pstmt.setInt(1, 105);
+            pstmt.setString(2, "Shameer");
+            pstmt.setDouble(3, 90000);
+            pstmt.setInt(4, 25);
+            pstmt.executeUpdate(); // Execute insertion
+
+            System.out.println("Data inserted successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#MongoDB:
+
+1.)db.products.find({})
+
+2.) db.products.find({ "product_price": { $gte: 400, $lte: 800 } })
+
+
+3.) db.products.find({ "product_price": { $not: { $gte: 400, $lte: 600 } } })
+
+
+4.) db.products.find({ "product_price": { $not: { $gte: 400, $lte: 600 } } })
+
+
+5.) db.products.find({}, { "product_name": 1, "product_material": 1 })
+
+
+6.) db.products.find({ "id": "10" })
+
+
+
+7.) db.products.find({}, { "product_name": 1, "product_material": 1 })
+
+
+8.) db.products.find({ "product_material": /soft/i })
+
+
+9.) db.products.find({ "product_color": "indigo", "product_price": 492.00 })
+
+
+
+10.) db.products.deleteMany({ "product_price": 28 })
+
+
+
+
+
