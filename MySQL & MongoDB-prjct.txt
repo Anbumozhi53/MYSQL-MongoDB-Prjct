@@ -1,4 +1,4 @@
-CREATE TABLE Empl (
+CREATE TABLE EMP (
     empno INT PRIMARY KEY,
     ename VARCHAR(50),
     job VARCHAR(50),
@@ -9,140 +9,117 @@ CREATE TABLE Empl (
     deptno INT
 );
 
+
+INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES
+(8369, 'SMITH', 'CLERK', NULL, '1990-12-18', 800.00, NULL, 20),
+(8499, 'ANYA', 'SALESMAN', 8698, '1991-02-20', 1600.00, 300.00, 30),
+(8521, 'SETH', 'SALESMAN', 8696, '1991-02-22', 1250.00, 500.00, 30),
+(8566, 'MAHADEVAN', 'MANAGER', 8839, '1991-04-02', 2985.00, NULL, 20),
+(5654, 'MOMIN', 'SALESMAN', 8698, '1991-09-28', 1250.00, 1400.00, 30),
+(8698, 'BINA', 'MANAGER', 8839, '1991-05-01', 2850.00, NULL, 30),
+(8882, 'SHIVANSH', 'MANAGER', 8839, '1991-06-09', 2450.00, NULL, 10),
+(6888, 'SCOTT', 'ANALYST', 8566, '1992-12-09', 3000.00, NULL, 20),
+(8839, 'AMIR', 'PRESIDENT', NULL, '1991-11-18', 3000.00, 5000.00, NULL),
+(8844, 'KULDEEP', 'SALESMAN', 8698, '1991-09-08', 1500.00, 0.00, 30);
+
+INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES
+(8369, 'SMITH', 'CLERK', NULL, '1990-12-18', 800.00, NULL, 20),
+(8499, 'ANYA', 'SALESMAN', 8698, '1991-02-20', 1600.00, 300.00, 30),
+(8521, 'SETH', 'SALESMAN', 8696, '1991-02-22', 1250.00, 500.00, 30),
+(8566, 'MAHADEVAN', 'MANAGER', 8839, '1991-04-02', 2985.00, NULL, 20),
+(5654, 'MOMIN', 'SALESMAN', 8698, '1991-09-28', 1250.00, 1400.00, 30),
+(8698, 'BINA', 'MANAGER', 8839, '1991-05-01', 2850.00, NULL, 30),
+(8882, 'SHIVANSH', 'MANAGER', 8839, '1991-06-09', 2450.00, NULL, 10),
+(6888, 'SCOTT', 'ANALYST', 8566, '1992-12-09', 3000.00, NULL, 20),
+(8839, 'AMIR', 'PRESIDENT', NULL, '1991-11-18', 3000.00, 5000.00, NULL),
+(8844, 'KULDEEP', 'SALESMAN', 8698, '1991-09-08', 1500.00, 0.00, 30);
+
 SELECT ename, sal
-FROM Empl
+FROM EMP
 WHERE sal >= 2200;
 
 SELECT *
-FROM Empl
+FROM EMP
 WHERE comm IS NULL;
 
 SELECT ename, sal
-FROM Empl
+FROM EMP
 WHERE sal NOT BETWEEN 2500 AND 4000;
 
 SELECT ename, job, sal
-FROM Empl
+FROM EMP
 WHERE mgr IS NULL;
 
 SELECT ename
-FROM Empl
+FROM EMP
 WHERE ename LIKE '__A%';
 
 SELECT ename
-FROM Empl
+FROM EMP
 WHERE ename LIKE '%T';
 
-
------------------------------------------------------------------
-2.)
-
-
-CREATE TABLE Employee (
-    empcode INT PRIMARY KEY,
-    empname VARCHAR(50),
-    esalary DECIMAL(10, 2),
-    empage INT
-);
-
+---------------------------------------------------------
 
 
 import java.sql.*;
 
-public class JdbcInsertExample {
+public class InsertEmployeeData {
 
     public static void main(String[] args) {
-        // Database connection details
-        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your DB details
-        String username = "your_username"; // Replace with your DB username
-        String password = "your_password"; // Replace with your DB password
         
+        // Database credentials
+        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your DB URL
+        String user = "root";  // Replace with your DB username
+        String password = "your_password"; // Replace with your DB password
 
-        String insertQuery = "INSERT INTO Employee (empcode, empname, esalary, empage) VALUES (?, ?, ?, ?)";
+        // SQL query to insert data
+        String insertQuery = "INSERT INTO Employee (empcode, empname, empage, esalary) VALUES (?, ?, ?, ?)";
+        
+        // Establish connection
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
-
-           
-            pstmt.setInt(1, 101);
-            pstmt.setString(2, "Jenny");
-            pstmt.setDouble(3, 10000);
-            pstmt.setInt(4, 25);
-            pstmt.executeUpdate(); // Execute insertion
-
-
-            pstmt.setInt(1, 102);
-            pstmt.setString(2, "Jacky");
-            pstmt.setDouble(3, 20000);
-            pstmt.setInt(4, 30);
-            pstmt.executeUpdate(); // Execute insertion
-
-           
-            pstmt.setInt(1, 103);
-            pstmt.setString(2, "Joe");
-            pstmt.setDouble(3, 40000);
-            pstmt.setInt(4, 20);
-            pstmt.executeUpdate(); // Execute insertion
-
+            // Add data for each employee
+            Object[][] employeeData = {
+                {101, "Jenny", 25, 10000},
+                {102, "Jacky", 30, 20000},
+                {103, "Joe", 20, 40000},
+                {104, "John", 40, 80000},
+                {105, "Shameer", 25, 90000}
+            };
             
-            pstmt.setInt(1, 104);
-            pstmt.setString(2, "John");
-            pstmt.setDouble(3, 80000);
-            pstmt.setInt(4, 40);
-            pstmt.executeUpdate(); // Execute insertion
-
+            // Insert data into database
+            for (Object[] employee : employeeData) {
+                preparedStatement.setInt(1, (int) employee[0]);
+                preparedStatement.setString(2, (String) employee[1]);
+                preparedStatement.setInt(3, (int) employee[2]);
+                preparedStatement.setDouble(4, (double) employee[3]);
+                
+                // Execute the insert query
+                preparedStatement.executeUpdate();
+            }
             
-            pstmt.setInt(1, 105);
-            pstmt.setString(2, "Shameer");
-            pstmt.setDouble(3, 90000);
-            pstmt.setInt(4, 25);
-            pstmt.executeUpdate(); // Execute insertion
-
             System.out.println("Data inserted successfully!");
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 }
 
-
-------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-#MongoDB:
-
-1.)db.products.find({})
-
-2.) db.products.find({ "product_price": { $gte: 400, $lte: 800 } })
-
-
-3.) db.products.find({ "product_price": { $not: { $gte: 400, $lte: 600 } } })
-
-
-4.) db.products.find({ "product_price": { $not: { $gte: 400, $lte: 600 } } })
-
-
-5.) db.products.find({}, { "product_name": 1, "product_material": 1 })
-
-
-6.) db.products.find({ "id": "10" })
+CREATE TABLE Employee (
+    empcode INT PRIMARY KEY,
+    empname VARCHAR(50),
+    empage INT,
+    esalary DECIMAL(10, 2)
+);
 
 
 
-7.) db.products.find({}, { "product_name": 1, "product_material": 1 })
 
 
-8.) db.products.find({ "product_material": /soft/i })
-
-
-9.) db.products.find({ "product_color": "indigo", "product_price": 492.00 })
-
-
-
-10.) db.products.deleteMany({ "product_price": 28 })
 
 
 
