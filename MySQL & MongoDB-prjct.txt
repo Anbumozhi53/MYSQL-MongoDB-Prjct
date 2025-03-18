@@ -1,313 +1,206 @@
-CREATE TABLE EMP (
-    empno INT PRIMARY KEY,
-    ename VARCHAR(50),
-    job VARCHAR(50),
-    mgr INT,
-    hiredate DATE,
-    sal DECIMAL(10, 2),
-    comm DECIMAL(10, 2),
-    deptno INT
-);
+<dependencies>
+    <!-- Spring Boot Starter Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring Boot Starter Thymeleaf (For rendering HTML forms) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+
+    <!-- Spring Data MongoDB -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-mongodb</artifactId>
+    </dependency>
+
+    <!-- Spring Boot Starter Test (For testing purposes) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+</dependencies>
+
+spring.data.mongodb.uri=mongodb://localhost:27017/employeedb
 
 
-INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
-VALUES
-(8369, 'SMITH', 'CLERK', NULL, '1990-12-18', 800.00, NULL, 20),
-(8499, 'ANYA', 'SALESMAN', 8698, '1991-02-20', 1600.00, 300.00, 30),
-(8521, 'SETH', 'SALESMAN', 8696, '1991-02-22', 1250.00, 500.00, 30),
-(8566, 'MAHADEVAN', 'MANAGER', 8839, '1991-04-02', 2985.00, NULL, 20),
-(5654, 'MOMIN', 'SALESMAN', 8698, '1991-09-28', 1250.00, 1400.00, 30),
-(8698, 'BINA', 'MANAGER', 8839, '1991-05-01', 2850.00, NULL, 30),
-(8882, 'SHIVANSH', 'MANAGER', 8839, '1991-06-09', 2450.00, NULL, 10),
-(6888, 'SCOTT', 'ANALYST', 8566, '1992-12-09', 3000.00, NULL, 20),
-(8839, 'AMIR', 'PRESIDENT', NULL, '1991-11-18', 3000.00, 5000.00, NULL),
-(8844, 'KULDEEP', 'SALESMAN', 8698, '1991-09-08', 1500.00, 0.00, 30);
+package com.example.employee.model;
 
-INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
-VALUES
-(8369, 'SMITH', 'CLERK', NULL, '1990-12-18', 800.00, NULL, 20),
-(8499, 'ANYA', 'SALESMAN', 8698, '1991-02-20', 1600.00, 300.00, 30),
-(8521, 'SETH', 'SALESMAN', 8696, '1991-02-22', 1250.00, 500.00, 30),
-(8566, 'MAHADEVAN', 'MANAGER', 8839, '1991-04-02', 2985.00, NULL, 20),
-(5654, 'MOMIN', 'SALESMAN', 8698, '1991-09-28', 1250.00, 1400.00, 30),
-(8698, 'BINA', 'MANAGER', 8839, '1991-05-01', 2850.00, NULL, 30),
-(8882, 'SHIVANSH', 'MANAGER', 8839, '1991-06-09', 2450.00, NULL, 10),
-(6888, 'SCOTT', 'ANALYST', 8566, '1992-12-09', 3000.00, NULL, 20),
-(8839, 'AMIR', 'PRESIDENT', NULL, '1991-11-18', 3000.00, 5000.00, NULL),
-(8844, 'KULDEEP', 'SALESMAN', 8698, '1991-09-08', 1500.00, 0.00, 30);
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-SELECT ename, sal
-FROM EMP
-WHERE sal >= 2200;
+@Document(collection = "employees")
+public class Employee {
 
-SELECT *
-FROM EMP
-WHERE comm IS NULL;
+    @Id
+    private String id;
+    private String employeeId;
+    private String name;
+    private String email;
+    private String location;
 
-SELECT ename, sal
-FROM EMP
-WHERE sal NOT BETWEEN 2500 AND 4000;
+    // Getters and setters
 
-SELECT ename, job, sal
-FROM EMP
-WHERE mgr IS NULL;
+    public String getId() {
+        return id;
+    }
 
-SELECT ename
-FROM EMP
-WHERE ename LIKE '__A%';
+    public void setId(String id) {
+        this.id = id;
+    }
 
-SELECT ename
-FROM EMP
-WHERE ename LIKE '%T';
+    public String getEmployeeId() {
+        return employeeId;
+    }
 
----------------------------------------------------------
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
+    public String getName() {
+        return name;
+    }
 
-CREATE TABLE Employee (
-    empcode INT PRIMARY KEY,
-    empname VARCHAR(50),
-    empage INT,
-    esalary DECIMAL(10, 2)
-);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-import java.sql.*;
+    public String getEmail() {
+        return email;
+    }
 
-public class InsertEmployeeData {
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public static void main(String[] args) {
-        
-        // Database credentials
-        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your DB URL
-        String user = "root";  // Replace with your DB username
-        String password = "your_password"; // Replace with your DB password
+    public String getLocation() {
+        return location;
+    }
 
-        // SQL query to insert data
-        String insertQuery = "INSERT INTO Employee (empcode, empname, empage, esalary) VALUES (?, ?, ?, ?)";
-        
-        // Establish connection
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-
-            // Add data for each employee
-            Object[][] employeeData = {
-                {101, "Jenny", 25, 10000},
-                {102, "Jacky", 30, 20000},
-                {103, "Joe", 20, 40000},
-                {104, "John", 40, 80000},
-                {105, "Shameer", 25, 90000}
-            };
-            
-            // Insert data into database
-            for (Object[] employee : employeeData) {
-                preparedStatement.setInt(1, (int) employee[0]);
-                preparedStatement.setString(2, (String) employee[1]);
-                preparedStatement.setInt(3, (int) employee[2]);
-                preparedStatement.setDouble(4, (double) employee[3]);
-                
-                // Execute the insert query
-                preparedStatement.executeUpdate();
-            }
-            
-            System.out.println("Data inserted successfully!");
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
 
+package com.example.employee.repository;
 
-----------------------------------------------------
+import com.example.employee.model.Employee;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-[
-    {
-        "id": "1",
-        "product_name": "Intelligent Fresh Chips",
-        "product_price": 655.00,
-        "product_material": "Concrete",
-        "product_color": "mint green"
-    },
-    {
-        "id": "2",
-        "product_name": "Practical Fresh Sausages",
-        "product_price": 911.0,
-        "product_material": "Cotton",
-        "product_color": "indigo"
-    },
-    {
-        "id": "3",
-        "product_name": "Refined Steel Car",
-        "product_price": 690.00,
-        "product_material": "Rubber",
-        "product_color": "gold"
-    },
-    {
-        "id": "4",
-        "product_name": "Gorgeous Plastic Pants",
-        "product_price": 492.00,
-        "product_material": "Soft",
-        "product_color": "plum"
-    },
-    {
-        "id": "5",
-        "product_name": "Sleek Cotton Chair",
-        "product_price": 33.00,
-        "product_material": "Fresh",
-        "product_color": "black"
-    },
-    {
-        "id": "6",
-        "product_name": "Awesome Wooden Towels",
-        "product_price": 474.00,
-        "product_material": "Plastic",
-        "product_color": "orange"
-    },
-    {
-        "id": "7",
-        "product_name": "Practical Soft Shoes",
-        "product_price": 500.00,
-        "product_material": "Rubber",
-        "product_color": "pink"
-    },
-    {
-        "id": "8",
-        "product_name": "Incredible Steel Hat",
-        "product_price": 78.00,
-        "product_material": "Rubber",
-        "product_color": "violet"
-    },
-    {
-        "id": "9",
-        "product_name": "Awesome Wooden Ball",
-        "product_price": 28.00,
-        "product_material": "Soft",
-        "product_color": "azure"
-    },
-    {
-        "id": "10",
-        "product_name": "Generic Wooden Pizza",
-        "product_price": 84.00,
-        "product_material": "Frozen",
-        "product_color": "indigo"
-    },
-    {
-        "id": "11",
-        "product_name": "Unbranded Wooden Cheese",
-        "product_price":26.00,
-        "product_material": "Soft",
-        "product_color": "black"
-    },
-    {
-        "id": "12",
-        "product_name": "Unbranded Plastic Salad",
-        "product_price": 89.00,
-        "product_material": "Wooden",
-        "product_color": "pink"
-    },
-    {
-        "id": "13",
-        "product_name": "Gorgeous Cotton Keyboard",
-        "product_price": 37.00,
-        "product_material": "Concrete",
-        "product_color": "sky blue"
-    },
-    {
-        "id": "14",
-        "product_name": "Incredible Steel Shirt",
-        "product_price": 54.00,
-        "product_material": "Metal",
-        "product_color": "white"
-    },
-    {
-        "id": "15",
-        "product_name": "Ergonomic Cotton Hat",
-        "product_price": 43.00,
-        "product_material": "Rubber",
-        "product_color": "mint green"
-    },
-    {
-        "id": "16",
-        "product_name": "Small Soft Chair",
-        "product_price": 47.00,
-        "product_material": "Cotton",
-        "product_color": "teal"
-    },
-    {
-        "id": "17",
-        "product_name": "Incredible Metal Car",
-        "product_price":36.00,
-        "product_material": "Fresh",
-        "product_color": "indigo"
-    },
-    {
-        "id": "18",
-        "product_name": "Licensed Plastic Bacon",
-        "product_price":88.00,
-        "product_material": "Steel",
-        "product_color": "yellow"
-    },
-    {
-        "id": "19",
-        "product_name": "Intelligent Cotton Chips",
-        "product_price": 46.00,
-        "product_material": "Soft",
-        "product_color": "azure"
-    },
-    {
-        "id": "20",
-        "product_name": "Handcrafted Wooden Bacon",
-        "product_price": 36.00,
-        "product_material": "Concrete",
-        "product_color": "lime"
-    },
-    {
-        "id": "21",
-        "product_name": "Unbranded Granite Chicken",
-        "product_price": 90.00,
-        "product_material": "Metal",
-        "product_color": "gold"
-    },
-    {
-        "id": "22",
-        "product_name": "Ergonomic Soft Hat",
-        "product_price": 99.00,
-        "product_material": "Rubber",
-        "product_color": "black"
-    },
-    {
-        "id": "23",
-        "product_name": "Intelligent Steel Pizza",
-        "product_price": 95.00,
-        "product_material": "Cotton",
-        "product_color": "azure"
-    },
-    {
-        "id": "24",
-        "product_name": "Tasty Rubber Cheese",
-        "product_price":47.00,
-        "product_material": "Frozen",
-        "product_color": "orchid"
-    },
-    {
-        "id": "25",
-        "product_name": "Licensed Steel Car",
-        "product_price":20.00,
-        "product_material": "Cotton",
-        "product_color": "indigo"
+public interface EmployeeRepository extends MongoRepository<Employee, String> {
+    Employee findByEmployeeId(String employeeId);
+}
+
+package com.example.employee.controller;
+
+import com.example.employee.model.Employee;
+import com.example.employee.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    // Landing page to display the form
+    @GetMapping("/")
+    public String showForm() {
+        return "index"; // Thymeleaf template to display the form
     }
-]
 
+    // API to save employee data
+    @PostMapping("/save")
+    public String saveEmployee(Employee employee) {
+        employeeRepository.save(employee);
+        return "redirect:/"; // Redirect to the form after saving
+    }
 
-db.products.find({})
-db.products.find({ "product_price": { $gte: 400, $lte: 800 } })
-db.products.find({ "product_price": { $not: { $gte: 400, $lte: 600 } } })
-db.products.find({ "product_price": { $gt: 500 } }).limit(4)
-db.products.find({}, { "product_name": 1, "product_material": 1, _id: 0 })
-db.products.find({ "id": "10" })
-db.products.find({}, { "product_name": 1, "product_material": 1, _id: 0 })
-db.products.find({ "product_material": /soft/i })
-db.products.find({ "product_color": "indigo", "product_price": 482.00 })
-db.products.deleteMany({ "product_price": 28.00 })
+    // API to display all employees
+    @GetMapping("/displayAll")
+    public String displayAllEmployees(Model model) {
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+        return "displayAll"; // Thymeleaf template to display all employees
+    }
+
+    // API to display a single employee by employee ID
+    @GetMapping("/display/{employeeId}")
+    public String displayEmployee(@PathVariable String employeeId, Model model) {
+        Employee employee = employeeRepository.findByEmployeeId(employeeId);
+        model.addAttribute("employee", employee);
+        return "displayEmployee"; // Thymeleaf template to display a single employee
+    }
+}
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Form</title>
+</head>
+<body>
+    <h1>Enter Employee Details</h1>
+    <form action="/save" method="post">
+        <label for="employeeId">Employee ID:</label>
+        <input type="text" name="employeeId" required/><br/>
+        <label for="name">Employee Name:</label>
+        <input type="text" name="name" required/><br/>
+        <label for="email">Employee Email:</label>
+        <input type="email" name="email" required/><br/>
+        <label for="location">Location:</label>
+        <input type="text" name="location" required/><br/>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+    <h1>All Employees</h1>
+    <table>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Location</th>
+        </tr>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.employeeId}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.email}"></td>
+            <td th:text="${employee.location}"></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Details</title>
+</head>
+<body>
+    <h1>Employee Details</h1>
+    <div>
+        <p><strong>Employee ID:</strong> <span th:text="${employee.employeeId}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${employee.name}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
+        <p><strong>Location:</strong> <span th:text="${employee.location}"></span></p>
+    </div>
+</body>
+</html>
 
 
 
